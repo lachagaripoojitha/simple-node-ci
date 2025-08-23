@@ -8,6 +8,10 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: small-lambda-repo
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -24,13 +28,10 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, and push image to ECR
+      - name: Build, tag, and push image
         run: |
-          IMAGE_TAG=latest
           IMAGE_URI=$(aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION --query 'repositories[0].repositoryUri' --output text)
-
-          docker build -t $IMAGE_URI:$IMAGE_TAG .
-          docker push $IMAGE_URI:$IMAGE_TAG
+          docker build -t $IMAGE_URI:latest .
+          docker push $IMAGE_URI:latest
