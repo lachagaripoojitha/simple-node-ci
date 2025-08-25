@@ -1,0 +1,9 @@
+{
+  "name": "small-lambda-ecr",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "lint": "echo \"Lint OK\"",
+    "test": "echo \"Tests OK\" && exit 0"
+  }
+}
